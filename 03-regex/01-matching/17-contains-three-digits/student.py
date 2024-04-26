@@ -1,2 +1,5 @@
+import re
 
-# Write your code here
+def contains_three_digits(string):
+    pattern = r'.*\d.*\d.*\d.*'
+    return bool(re.match(pattern, string))
