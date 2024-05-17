@@ -10,3 +10,4 @@ def findMaximum(list):
             list.remove(list[0])
         
         return findMaximum(list)
+    
