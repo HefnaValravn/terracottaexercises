@@ -3,4 +3,4 @@ def directors(movies):
 
 
 def common_elements(xs, ys):
-    return {x for x in xs if x in ys}
+    return {i for i in xs if i in ys}

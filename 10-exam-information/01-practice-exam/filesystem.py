@@ -54,31 +54,74 @@ class Entity(ABC):
         self.__name = name
         
         
-        @property
-        def name(self):
-            return self.__name
+    @property
+    def name(self):
+        return self.__name
         
-        @name.setter
-        def name(self, value):
-            if not self.is_valid_name(value):
-                raise RuntimeError("Invalid name")
-            self.__name = value
+    @name.setter
+    def name(self, value):
+        if not self.is_valid_name(value):
+            raise RuntimeError("Invalid name")
+        self.__name = value
+    
+    
+    @property
+    def storage(self):
+        return self.__storage
+    
+    @property
+    @abstractmethod
+    def size_in_blocks(self):
+        ...
         
-        
-        @property
-        def storage(self):
-            return self.__storage
-        
-        
-        @abstractmethod
-        @property
-        def size_in_blocks(self):
-            ...
+    @property
+    def size_in_bytes(self):
+        return self.size_in_blocks() * self.storage.block_size
+    
+    @abstractmethod
+    def clear(self):
+        ...
             
-        @property
-        def size_in_bytes(self):
-            return size_in_blocks() * self.storage.block_size
+            
+            
+class File(Entity):
+    def __init__(self, storage, name):
+        super().__init__(storage, name)
+        self._blocks = []
         
-        @abstractmethod
-        def clear(self):
-            ...
+        
+    def grow(self, block_count):
+        allocated_blocks = self.storage.allocate(block_count)
+        self._blocks.extend(allocated_blocks)
+        
+        
+    @property
+    def size_in_blocks(self):
+        return len(self._blocks)
+    
+    
+    def clear(self):
+        self.storage.free(self._blocks)
+        self._blocks = []
+        
+        
+        
+class Directory(Entity):
+    def __init__(self, storage, name):
+        super().__init__(storage, name)
+        self._children = []
+        
+    def add(self, entity):
+        self._children.append(entity)
+        
+    @property
+    def size_in_blocks(self):
+        return sum(child.size_in_blocks for child in self._children)
+        
+    def clear(self):
+        for child in self._children:
+            if child.size_in_blocks != 0:
+                child.clear()
+        
+        self._children = []
+    

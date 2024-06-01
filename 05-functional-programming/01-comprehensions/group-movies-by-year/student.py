@@ -1,6 +1,2 @@
 def group_movies_by_year(movies):
-    answer = {}
-    for year in {movie.year for movie in movies}:
-        answer[year] = [movie.title for movie in movies if movie.year == year]
-
-    return answer
+    return {movie.year: [movie2.title for movie2 in movies if movie2.year == movie.year] for movie in movies}

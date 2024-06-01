@@ -11,5 +11,4 @@ def titles_and_actor_counts(movies):
 
 
 def reverse_words(sentence):
-    reversed = [word[::-1] for word in sentence.split(" ")]
-    return " ".join(reversed)
+    return ' '.join(string[::-1] for string in sentence.split(' '))

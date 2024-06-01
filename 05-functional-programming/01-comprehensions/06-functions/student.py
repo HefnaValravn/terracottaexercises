@@ -1,7 +1,5 @@
-import re
-
 def movie_count(movies, director):
-    return len([movie for movie in movies if movie.director == director])
+    return len([movie.title for movie in movies if movie.director == director])
 
 
 def longest_movie_runtime_with_actor(movies, actor):
@@ -9,29 +7,30 @@ def longest_movie_runtime_with_actor(movies, actor):
 
 
 def has_director_made_genre(movies, director, genre):
-    return any([movie for movie in movies if movie.director == director and genre in movie.genres])
+    return any([movie.title for movie in movies if movie.director == director and genre in movie.genres])
 
 
 def is_prime(n):
-    return len([number for number in range(1, n) if n % number == 0]) == 1
+    return len([number for number in range(1, n+1) if n % number == 0]) == 2
 
 
 def is_increasing(ns):
-    return ns == sorted(ns)
+    return all(ns[i] <= ns[i + 1] for i in range(len(ns) - 1))
 
 
 def count_matching(xs, ys):
-    return len([pair for pair in zip(xs, ys) if pair[0] == pair[1]])
+    return len([item for item in xs if item in ys and xs.index(item) == ys.index(item)])
 
 
 def weighted_sum(ns, weights):
-    return sum([pair[0] * pair[1] for pair in zip(ns, weights)])
+    return sum(pair[0] * pair[1] for pair in zip(ns, weights))
 
 
 def alternating_caps(string):
-    return ''.join(letter.upper() if i % 2 == 0 else letter.lower() for i, letter in enumerate(string))
+    return ''.join([letter.upper() if number % 2 == 0 else letter for number, letter in enumerate(string)])
 
 
 def find_repeated_words(sentence):
-    words = [word.lower() for word in re.findall('[a-zA-Z]+', sentence)]
+    words = sentence.lower().split()
+    words = [''.join(w for w in word if w.isalnum()) for word in words]
     return {word1 for word1, word2 in zip(words, words[1:]) if word1 == word2}
