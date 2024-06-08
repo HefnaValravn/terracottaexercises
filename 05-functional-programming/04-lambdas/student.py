@@ -1,4 +1,6 @@
-from util import group_by, partition
+from util import group_by
+from util import partition
+from util import filter
 
 def group_by_suit(cards):
     return group_by(cards, lambda card: card.suit)
@@ -9,4 +11,5 @@ def group_by_value(cards):
 
 
 def partition_by_color(cards):
-    return partition(cards, lambda card: card.suit == 'spades' or card.suit == 'clubs')
+    return partition(cards, lambda card: card.suit == "spades" or card.suit == "clubs")
+
