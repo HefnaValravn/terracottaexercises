@@ -10,8 +10,8 @@ def test_task_becomes_overdue():
     calendar = CalendarStub(today)
     task = Task('description', tomorrow)
     taskList = TaskList(calendar)
-
     taskList.add_task(task)
+    
     calendar.today = nextWeek
 
     assert [task] == taskList.overdue_tasks
